@@ -1,20 +1,16 @@
 import pandas as pd
-# import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
-# from sklearn.utils import resample, shuffle
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
-# import joblib
 
 
 def preprocessing_pipeline(csv_path):
     dataset = pd.read_csv(csv_path)
     numeric_cols = dataset.select_dtypes(include='number')
-    # numeric_cols = ['Age', 'Sex', 'Settlement size']
     categorical_cols = dataset.select_dtypes(include='object')
     categorical_features = categorical_cols.columns.to_list()
     # 1. Drop fitur yang tidak digunakan
-    dataset = dataset.drop(columns=['ID'], inplace=True, axis=1)
+    dataset = dataset.drop(columns=['ID'])
 
     # 2. Menangani Outliers
     Q1 = dataset[numeric_cols].quantile(0.25)
