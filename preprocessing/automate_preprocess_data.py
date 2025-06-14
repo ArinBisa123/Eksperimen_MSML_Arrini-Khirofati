@@ -2,16 +2,19 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
+import os
 
 
 def preprocessing_pipeline(csv_path):
     dataset = pd.read_csv(csv_path)
+
     numeric_cols = dataset.select_dtypes(include='number')
     categorical_cols = dataset.select_dtypes(include='object')
     categorical_features = categorical_cols.columns.to_list()
     numerical_features = numeric_cols.columns.to_list()
     # 1. Drop fitur yang tidak digunakan
-    dataset.drop(columns=['ID'], inplace=True)
+    if 'ID' in dataset.columns:
+        dataset.drop(columns=['ID'], inplace=True)
 
     # 2. Menangani Outliers
     Q1 = dataset[numerical_features].quantile(0.25)
@@ -38,6 +41,5 @@ def preprocessing_pipeline(csv_path):
     return X_train_enc, X_test_enc, y_train, y_test, preprocessor
 
 
-file_path = f'./sgdata.csv'
-data_final = preprocessing_pipeline(file_path)
+data_final = preprocessing_pipeline('./sgdata.csv')
 data_final.to_csv("sgdata_preprocessed.csv")
