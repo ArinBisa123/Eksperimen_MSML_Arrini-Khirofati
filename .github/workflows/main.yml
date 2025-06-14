@@ -28,17 +28,16 @@ jobs:
 
       - name: Run preprocessing script
         run: |
-          python preprocessing/automate_Nama-siswa.py
+          python preprocessing/automate_preprocess_data.py
 
       - name: Move processed data
         run: |
-          mv train_pca.csv preprocessing/
-          mv test_pca.csv preprocessing/
+          mv sgdata_preprocessed.csv preprocessing/
 
       - name: Commit processed data
         run: |
           git config --global user.name ${{ secrets.username }}
           git config --global user.email ${{ secrets.email }}
-          git add preprocessing/train_pca.csv preprocessing/test_pca.csv 
+          git add preprocessing/sgdata_preprocessed.csv 
           git commit -m 'Berhasil update dataset' || echo "Tidak Berhasil Mengunggah dataset terbaru"
           git push
