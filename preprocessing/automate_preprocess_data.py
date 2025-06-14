@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
+import os
 
 
 def preprocessing_pipeline(csv_path):
@@ -48,7 +49,9 @@ def preprocessing_pipeline(csv_path):
     return train_final, test_final
 
 
-csv_path = f'../sgdata.csv'
+# csv_path = f'../sgdata.csv'
+current_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(current_dir, '..', 'sgdata.csv')
 train_final, test_final = preprocessing_pipeline(csv_path)
 train_final.to_csv("sgtrain.csv", index=False)
 test_final.to_csv("sgtest.csv", index=False)
