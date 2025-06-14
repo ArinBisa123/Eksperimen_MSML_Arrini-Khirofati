@@ -10,7 +10,7 @@ def preprocessing_pipeline(csv_path):
     categorical_cols = dataset.select_dtypes(include='object')
     categorical_features = categorical_cols.columns.to_list()
     # 1. Drop fitur yang tidak digunakan
-    dataset = dataset.drop(columns=['ID'])
+    dataset.drop(columns=['ID'], inplace=True)
 
     # 2. Menangani Outliers
     Q1 = dataset[numeric_cols].quantile(0.25)
