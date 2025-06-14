@@ -32,12 +32,13 @@ jobs:
 
       - name: Move processed data
         run: |
-          mv sgdata_preprocessed.csv preprocessing/
+          mv sgtest.csv preprocessing/
+          mv sgtrain.csv preprocessing/
 
       - name: Commit processed data
         run: |
           git config --global user.name ${{ secrets.username }}
           git config --global user.email ${{ secrets.email }}
-          git add preprocessing/sgdata_preprocessed.csv 
+          git add preprocessing/sgtest.csv preprocessing/sgtrain.csv
           git commit -m 'Berhasil update dataset' || echo "Tidak Berhasil Mengunggah dataset terbaru"
           git push
