@@ -9,15 +9,16 @@ def preprocessing_pipeline(csv_path):
     numeric_cols = dataset.select_dtypes(include='number')
     categorical_cols = dataset.select_dtypes(include='object')
     categorical_features = categorical_cols.columns.to_list()
+    numerical_features = numeric_cols.columns.to_list()
     # 1. Drop fitur yang tidak digunakan
     dataset.drop(columns=['ID'], inplace=True)
 
     # 2. Menangani Outliers
-    Q1 = dataset[numeric_cols].quantile(0.25)
-    Q3 = dataset[numeric_cols].quantile(0.75)
+    Q1 = dataset[numerical_features].quantile(0.25)
+    Q3 = dataset[numerical_features].quantile(0.75)
     IQR = Q3 - Q1
-    filter_outliers = ~((dataset[numeric_cols] < (Q1 - 1.5 * IQR)) |
-                        (dataset[numeric_cols] > (Q3 + 1.5 * IQR))).any(axis=1)
+    filter_outliers = ~((dataset[numerical_features] < (Q1 - 1.5 * IQR)) |
+                        (dataset[numerical_features] > (Q3 + 1.5 * IQR))).any(axis=1)
     dataset = dataset[filter_outliers]
 
     # 3. Split data menjadi train dan test
@@ -28,7 +29,7 @@ def preprocessing_pipeline(csv_path):
                                                         random_state=123)
     # 4. Encoding & Scaling
     preprocessor = ColumnTransformer([
-        ('num', StandardScaler(), numeric_cols),
+        ('num', StandardScaler(), numerical_features),
         ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)
     ])
     X_train_enc = preprocessor.fit_transform(X_train)
