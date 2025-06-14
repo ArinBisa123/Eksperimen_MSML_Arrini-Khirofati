@@ -9,7 +9,8 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 def preprocessing_pipeline(csv_path):
     dataset = pd.read_csv(csv_path)
-    numeric_cols = ['Age', 'Sex', 'Settlement size']
+    numeric_cols = dataset.select_dtypes(include='number')
+    # numeric_cols = ['Age', 'Sex', 'Settlement size']
     categorical_cols = dataset.select_dtypes(include='object')
     categorical_features = categorical_cols.columns.to_list()
     # 1. Drop fitur yang tidak digunakan
